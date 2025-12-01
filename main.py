@@ -22,7 +22,7 @@ def get_key_blocking():
 
 
 def menu():
-    """Text menu (audio instructions are spoken once at program start)."""
+    """Text menu (audio instructions are spoken once at program start)"""
     print("\nAudio Echo Memory")
     print("[1] Tutorial  [2] Play  [q] Quit")
     return input("> ").strip()

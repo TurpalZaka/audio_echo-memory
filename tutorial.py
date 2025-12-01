@@ -10,7 +10,7 @@ def run_tutorial(get_key_fn):
     """
     speak(
         "Tutorial mode. "
-        "You will learn the sounds for keys 1, 2, 3 and 4"
+        "You will learn the sounds for keys 1, 2, 3 and 4, "
         "After each tone, press the matching key on your keyboard and press Enter."
     )
 
