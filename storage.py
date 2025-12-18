@@ -1,15 +1,36 @@
+import json
 import os
 
-PATH = "high_score.txt"
+PATH = "highscores.json"
 
-def load_highscore():
+def _default():
+    return {"1": 0, "2": 0, "3": 0, "4": 0}
+
+def _load_all():
     if not os.path.exists(PATH):
-        return 0
+        data = _default()
+        _save_all(data)
+        return data
     try:
-        return int(open(PATH, "r", encoding="utf-8").read().strip())
-    except:
-        return 0
+        with open(PATH, "r", encoding="utf-8") as f:
+            data = json.load(f)
+    except Exception:
+        data = _default()
+    # ensure keys exist
+    for k in ("1", "2", "3", "4"):
+        if k not in data:
+            data[k] = 0
+    return data
 
-def save_highscore(score:int):
+def _save_all(data):
     with open(PATH, "w", encoding="utf-8") as f:
-        f.write(str(score))
+        json.dump(data, f, indent=2)
+
+def load_highscore(profile: int) -> int:
+    data = _load_all()
+    return int(data.get(str(profile), 0))
+
+def save_highscore(profile: int, score: int):
+    data = _load_all()
+    data[str(profile)] = int(score)
+    _save_all(data)

@@ -2,12 +2,24 @@ import random, time
 from audio import play_key, success, fail, KEY_FREQS
 from storage import load_highscore, save_highscore
 
+# Global settings (set from main.py)
+PROFILE = 1     # 1..4
+NUM_KEYS = 4    # 4..6
+
+def configure(profile: int, num_keys: int):
+    global PROFILE, NUM_KEYS
+    PROFILE = max(1, min(4, int(profile)))
+    NUM_KEYS = max(4, min(6, int(num_keys)))
+
 class Game:
     def __init__(self):
         self.sequence = []
         self.score = 0
-        self.high = load_highscore()
-        self.allowed = list(KEY_FREQS.keys())
+        self.high = load_highscore(PROFILE)
+
+        # only allow first NUM_KEYS keys (1..4, 1..5, or 1..6)
+        all_keys = list(KEY_FREQS.keys())  # expects '1'..'6'
+        self.allowed = all_keys[:NUM_KEYS]
 
     def new_round(self):
         self.sequence.append(random.choice(self.allowed))
@@ -20,16 +32,16 @@ class Game:
             pressed = get_key_fn()
             if pressed != k:
                 fail()
-                self.finish(False)
+                self.finish()
                 return False
         success()
         self.score += 1
         return True
 
-    def finish(self, won_round):
+    def finish(self):
         if self.score > self.high:
             self.high = self.score
-            save_highscore(self.high)
+            save_highscore(PROFILE, self.high)
 
 def play_loop(get_key_fn):
     g = Game()

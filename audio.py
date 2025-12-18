@@ -11,7 +11,14 @@ def tone(freq, duration=0.45):
 def play_array(arr):
     sd.play(arr, SAMPLE_RATE, blocking=True)
 
-KEY_FREQS = {'1': 261.63, '2': 329.63, '3': 392.00, '4': 523.25}
+KEY_FREQS = {
+    '1': 261.63,  # C4
+    '2': 329.63,  # E4
+    '3': 392.00,  # G4
+    '4': 523.25,  # C5
+    '5': 659.25,  # E5
+    '6': 783.99   # G5
+}
 
 def play_key(key):
     if key in KEY_FREQS:
