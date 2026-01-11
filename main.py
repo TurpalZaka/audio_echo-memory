@@ -15,7 +15,6 @@ set_rate(TTS_RATE)
 
 def speak_main_menu():
     speak(
-        "Audio Echo Memory menu. "
         "Press 1 for tutorial. "
         "Press 2 to play. "
         "Press 3 to select profile. "
@@ -40,9 +39,6 @@ def get_key_blocking(num_keys: int):
     """Ask for a key 1..num_keys, with spoken error messages."""
     allowed = [str(i) for i in range(1, num_keys + 1)]
     allowed_str = ", ".join(allowed)
-
-    # Speak the instruction once per prompt cycle
-    speak(f"Press a key {allowed[0]} to {allowed[-1]}.")
 
     while True:
         k = input(f"Press key (1-{num_keys}): ").strip()
@@ -71,6 +67,11 @@ def menu():
 
 def select_profile():
     global PROFILE
+    speak(
+        f"Current profile is {PROFILE}. "
+        "Choose profile 1-4."
+    )
+
     p = input("Choose profile (1-4): ").strip()
     if p in ("1", "2", "3", "4"):
         PROFILE = int(p)
@@ -97,27 +98,31 @@ def settings_menu():
             continue
 
         if c == "1":
+            speak("Set TTS rate (80-220)")
             r = input("Set TTS rate (80-220): ").strip()
             if r.isdigit():
                 TTS_RATE = max(80, min(220, int(r)))
                 set_rate(TTS_RATE)
-                save_tts_rate(TTS_RATE)  # ✅ persist only rate
+                save_tts_rate(TTS_RATE)  # persist only rate
                 speak(f"TTS speed set to {TTS_RATE}.")
+                speak_settings_menu()
             else:
                 speak("Invalid rate. Please enter a number between 80 and 220.")
                 speak_settings_menu()
 
         elif c == "2":
+            speak("Set number of sounds (4-6)")
             nk = input("Number of sounds (4-6): ").strip()
             if nk.isdigit():
                 NUM_KEYS = max(4, min(6, int(nk)))
                 speak(f"Difficulty set. Using {NUM_KEYS} sounds.")
+                speak_settings_menu()
             else:
                 speak("Invalid number. Please enter 4, 5, or 6.")
                 speak_settings_menu()
 
         elif c == "b":
-            speak_main_menu()  # ✅ speak again when returning
+            speak_main_menu()  # peak again when returning
             return
 
         else:
@@ -141,8 +146,8 @@ if __name__ == "__main__":
 
         if choice == "1":
             # Tutorial adapts automatically because input range is NUM_KEYS
-            run_tutorial(lambda: get_key_blocking(NUM_KEYS))
-            speak_main_menu()  # ✅ speak again after returning
+            run_tutorial(lambda: get_key_blocking(NUM_KEYS), num_keys=NUM_KEYS)
+            speak_main_menu()  # speak again after returning
 
         elif choice == "2":
             # Configure game with selected profile & difficulty
@@ -150,11 +155,11 @@ if __name__ == "__main__":
             score, high = play_loop(lambda: get_key_blocking(NUM_KEYS))
             print(f"Game over. Score={score}, HighScore={high}")
             speak(f"Game over. Your score was {score}. Your high score is {high}.")
-            speak_main_menu()  # ✅ speak again after returning
+            speak_main_menu()  # speak again after returning
 
         elif choice == "3":
             select_profile()
-            speak_main_menu()  # ✅ speak again after returning
+            speak_main_menu()  # speak again after returning
 
         elif choice == "4":
             settings_menu()
