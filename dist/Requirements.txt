@@ -1,0 +1,29 @@
+Minimum Requirements
+
+Operating System: Windows 10 or Windows 11
+
+Architecture: 64-bit (x64)
+
+Audio output: Speakers or headphones (required)
+
+Keyboard: Standard keyboard (number keys 1–6, Enter, B,  Q)
+
+-------------------------------------------------------------------------------
+
+Software Requirements
+
+No Python installation required (when using the .exe)
+
+Microsoft English Voice (Zira) recommended
+
+Usually preinstalled on Windows
+
+If not available, Windows will fall back to another installed voice
+
+-------------------------------------------------------------------------------
+
+Accessibility
+
+Fully playable without screen vision
+
+All menus and actions are accessible via text-to-speech (TTS) and audio cues
